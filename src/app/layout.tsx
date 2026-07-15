@@ -1,16 +1,19 @@
-import type { Metadata } from 'next';
-import localFont from 'next/font/local';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
-
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-});
 
 export const metadata: Metadata = {
   title: 'Каталог мебели',
   description: 'Каталог мебели по категориям',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    title: 'Каталог мебели',
+    statusBarStyle: 'default',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#1c1917',
 };
 
 export default function RootLayout({
@@ -20,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={`${geistSans.variable} antialiased bg-stone-50 text-stone-900`}>
+      <body className="antialiased bg-stone-50 text-stone-900 font-sans">
         {children}
       </body>
     </html>
