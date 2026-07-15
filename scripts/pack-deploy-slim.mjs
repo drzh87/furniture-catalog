@@ -6,11 +6,22 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
 
+const SKIP = new Set([
+  'package-lock.json',
+  'deploy-payload.json',
+  'deploy-payload-slim.json',
+  'deploy-request.json',
+  'FILE_PLAN.md',
+]);
+
 const files = execSync('git ls-files', { cwd: root, encoding: 'utf8' })
   .trim()
   .split('\n')
   .filter(Boolean)
-  .filter((f) => !f.includes('src/app/fonts/') && f !== 'deploy-payload.json');
+  .filter((f) => !f.includes('src/app/fonts/'))
+  .filter((f) => !f.startsWith('scripts/'))
+  .filter((f) => f !== 'src/app/favicon.ico')
+  .filter((f) => !SKIP.has(f));
 
 const payload = files.map((rel) => {
   const abs = path.join(root, rel);
@@ -21,5 +32,6 @@ const payload = files.map((rel) => {
   return { file: rel.replace(/\\/g, '/'), data: fs.readFileSync(abs, 'utf8') };
 });
 
-fs.writeFileSync(path.join(root, 'deploy-payload-slim.json'), JSON.stringify(payload));
-console.log(`Slim payload: ${payload.length} files, ${(fs.statSync(path.join(root, 'deploy-payload-slim.json')).size / 1024).toFixed(0)} KB`);
+const out = path.join(root, 'deploy-payload-slim.json');
+fs.writeFileSync(out, JSON.stringify(payload));
+console.log(`${payload.length} files, ${(fs.statSync(out).size / 1024).toFixed(0)} KB`);

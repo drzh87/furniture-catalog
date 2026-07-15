@@ -40,9 +40,9 @@ async function main() {
     process.exit(1);
   }
 
-  const payloadPath = path.join(root, 'deploy-payload.json');
+  const payloadPath = path.join(root, 'deploy-payload-slim.json');
   if (!fs.existsSync(payloadPath)) {
-    console.error('Run: node scripts/pack-deploy.mjs first');
+    console.error('Run: node scripts/pack-deploy-slim.mjs first');
     process.exit(1);
   }
   const files = JSON.parse(fs.readFileSync(payloadPath, 'utf8'));
