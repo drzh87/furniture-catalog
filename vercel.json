@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "src/app/api/admin/pdf/process/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/admin/products/route.ts": {
+      "maxDuration": 300
+    }
+  }
+}
